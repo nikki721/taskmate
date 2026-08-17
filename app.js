@@ -39,6 +39,7 @@ dateInput.value = new Date().toISOString().split("T")[0];
 updateClock();
 setInterval(updateClock, 1000);
 initEventListeners();
+handleReturnFromScarlet();
 renderApp();
 
 // --- Core Rendering Logic ---
@@ -82,6 +83,9 @@ function renderTasks() {
         <div class="task-meta">
           <span class="badge ${task.priority}">${task.priority}</span>
           <span class="task-date-text">📅 ${task.date} ${task.time ? "⏰ " + task.time : ""}</span>
+          <button class="focus-scarlet-btn" onclick="focusWithScarlet(${task.id})" title="Open this task in Scarlet's Timekeeper">
+            <span class="portal-star">✦</span> Focus with Scarlet
+          </button>
         </div>
       </div>
       <button class="delete-btn" onclick="deleteTask(${task.id})" title="Delete">🗑️</button>
@@ -241,6 +245,45 @@ function toggleTask(id) {
 function deleteTask(id) {
   tasks = tasks.filter((t) => t.id !== id);
   renderApp();
+}
+
+// --- Scarlet's Timekeeper Portal ---
+// Sends the chosen task over to Scarlet's Timekeeper as a "mission" via
+// simple URL parameters — no backend, no shared storage required.
+function focusWithScarlet(id) {
+  const task = tasks.find((t) => t.id === id);
+  if (!task) return;
+
+  const params = new URLSearchParams({
+    task: task.text,
+    taskId: String(task.id),
+    priority: task.priority,
+    from: window.location.href,
+  });
+
+  window.location.href = `../scarlet-timekeeper/index.html?${params.toString()}`;
+}
+
+// Returning from Scarlet: if a mission was completed there, mark it done here.
+function handleReturnFromScarlet() {
+  const params = new URLSearchParams(window.location.search);
+  const completedTaskId = params.get("completedTaskId");
+  if (!completedTaskId) return;
+
+  const id = Number(completedTaskId);
+  const task = tasks.find((t) => t.id === id);
+  if (task && !task.completed) {
+    task.completed = true;
+    saveTasks();
+  }
+
+  // Clean the URL so a refresh doesn't re-trigger this.
+  params.delete("completedTaskId");
+  const cleanUrl =
+    window.location.pathname +
+    (params.toString() ? `?${params.toString()}` : "") +
+    window.location.hash;
+  window.history.replaceState({}, document.title, cleanUrl);
 }
 
 // --- Helpers ---

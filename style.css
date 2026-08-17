@@ -23,13 +23,19 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   background:
-    linear-gradient(180deg, rgba(10, 35, 20, 0.28) 0%, rgba(8, 30, 18, 0.38) 100%),
-    url("https://images.unsplash.com/photo-1758995017474-8a9b71604016?auto=format&fit=crop&w=2000&q=80") center/cover no-repeat fixed;
+    linear-gradient(180deg, rgba(8, 26, 16, 0.42) 0%, rgba(6, 20, 13, 0.55) 100%),
+    url("assets/forest-bg.jpg") center/cover no-repeat fixed;
   color: var(--text-main);
   min-height: 100vh;
   padding: 25px 15px;
   display: flex;
   justify-content: center;
+}
+
+@media (max-width: 768px) {
+  body {
+    background-attachment: scroll;
+  }
 }
 
 .glass-wrapper {
@@ -317,6 +323,7 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .badge {
@@ -347,6 +354,39 @@ body {
 
 .delete-btn:hover {
   opacity: 1;
+}
+
+/* Portal button — a small, subtle doorway out of the forest.
+   Kept restrained (not pink) so TaskMate stays green/grounded;
+   the glow is just enough to say "something magical is through here". */
+.focus-scarlet-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(200, 170, 255, 0.35);
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 6px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.15s;
+}
+
+.focus-scarlet-btn .portal-star {
+  color: #e08fe0;
+  font-size: 0.9em;
+}
+
+.focus-scarlet-btn:hover {
+  color: #ffffff;
+  border-color: rgba(224, 143, 224, 0.75);
+  box-shadow: 0 0 14px rgba(224, 143, 224, 0.35);
+  transform: translateY(-1px);
 }
 
 /* Sidebar Components */
