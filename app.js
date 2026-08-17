@@ -250,6 +250,8 @@ function deleteTask(id) {
 // --- Scarlet's Timekeeper Portal ---
 // Sends the chosen task over to Scarlet's Timekeeper as a "mission" via
 // simple URL parameters — no backend, no shared storage required.
+const SCARLET_URL = "https://nikki721.github.io/scarlet-timekeeper/";
+
 function focusWithScarlet(id) {
   const task = tasks.find((t) => t.id === id);
   if (!task) return;
@@ -261,7 +263,7 @@ function focusWithScarlet(id) {
     from: window.location.href,
   });
 
-  window.location.href = `../scarlet-timekeeper/index.html?${params.toString()}`;
+  window.location.href = `${SCARLET_URL}?${params.toString()}`;
 }
 
 // Returning from Scarlet: if a mission was completed there, mark it done here.
